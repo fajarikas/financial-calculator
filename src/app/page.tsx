@@ -36,7 +36,7 @@ export default function FinancialCalculator() {
 
         {/* Input */}
         <div className="p-6">
-          <label htmlFor="income" className="block mb-2 font-medium text-gray-700">
+          <label htmlFor="income" className="block mb-2 font-medium text-black">
             Pendapatan Bulanan (Rp)
           </label>
           <div className="flex mb-6">
@@ -45,7 +45,7 @@ export default function FinancialCalculator() {
               id="income"
               value={income}
               onChange={(e) => setIncome(parseFloat(e.target.value))}
-              className="flex-1 p-3 border border-gray-300 rounded-l-lg"
+              className="flex-1 p-3 border border-gray-300 rounded-l-lg text-black"
               placeholder="Masukkan pendapatan"
             />
             <button onClick={calculate} className="bg-blue-600 text-white px-4 py-3 rounded-r-lg">
@@ -84,26 +84,26 @@ export default function FinancialCalculator() {
 
               {/* Breakdown */}
               <div className="border border-gray-200 rounded-lg p-4 bg-white">
-                <h3 className="text-lg font-semibold mb-3">Rincian Detail</h3>
+                <h3 className="text-lg font-semibold mb-3 text-black">Rincian Detail</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   {/* Needs Breakdown */}
                   <div>
                     <h4 className="text-blue-700 font-medium mb-1">Kebutuhan Pokok</h4>
-                    <p>Perumahan: {formatRupiah(needs * 0.35)}</p>
-                    <p>Makanan: {formatRupiah(needs * 0.25)}</p>
-                    <p>Transportasi: {formatRupiah(needs * 0.15)}</p>
+                    <p className='text-black'>Perumahan: {formatRupiah(needs * 0.35)}</p>
+                    <p className='text-black'>Makanan: {formatRupiah(needs * 0.25)}</p>
+                    <p className='text-black'>Transportasi: {formatRupiah(needs * 0.15)}</p>
                   </div>
                   {/* Wants Breakdown */}
                   <div>
                     <h4 className="text-purple-700 font-medium mb-1">Keinginan</h4>
-                    <p>Makan di luar: {formatRupiah(wants * 0.35)}</p>
-                    <p>Hiburan: {formatRupiah(wants * 0.3)}</p>
+                    <p className='text-black'>Makan di luar: {formatRupiah(wants * 0.35)}</p>
+                    <p className='text-black'>Hiburan: {formatRupiah(wants * 0.3)}</p>
                   </div>
                   {/* Savings Breakdown */}
                   <div>
                     <h4 className="text-green-700 font-medium mb-1">Tabungan</h4>
-                    <p>Dana Darurat: {formatRupiah(savings * 0.4)}</p>
-                    <p>Investasi: {formatRupiah(savings * 0.4)}</p>
+                    <p className='text-black'>Dana Darurat: {formatRupiah(savings * 0.4)}</p>
+                    <p className='text-black'>Investasi: {formatRupiah(savings * 0.4)}</p>
                   </div>
                 </div>
               </div>
@@ -152,9 +152,9 @@ function Card({ title, subtitle, color, value, percent }: CardProps) {
 
   return (
     <div className={`${bgColor} border rounded-lg p-4`}>
-      <h3 className={`font-semibold text-${color}-800 mb-2`}>{title}</h3>
+      <h3 className={`font-semibold text-black mb-2`}>{title}</h3>
       <p className="text-gray-600 text-sm mb-2">{subtitle}</p>
-      <div className={`text-xl font-bold text-${color}-800 mb-2`}>
+      <div className={`text-xl font-bold text-black mb-2`}>
         Rp{value.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&.')}
       </div>
       <div className="w-full bg-opacity-30 h-2 rounded-full relative overflow-hidden bg-gray-200">
