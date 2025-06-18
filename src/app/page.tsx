@@ -62,7 +62,7 @@ export default function FinancialCalculator() {
             </div>
             <button
               onClick={calculate}
-              className="bg-blue-600 text-white px-4 py-3 rounded-r-lg ml-2"
+              className="bg-blue-600 text-white px-4 py-3 rounded-r-lg"
             >
               Hitung
             </button>
