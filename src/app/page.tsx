@@ -3,16 +3,24 @@
 import { useState } from 'react'
 
 export default function FinancialCalculator() {
-  const [income, setIncome] = useState<number | ''>('')
   const [showResults, setShowResults] = useState(false)
+  const [income, setIncome] = useState<string>('')
 
-  const formatRupiah = (amount: number) => {
-    return 'Rp' + amount.toFixed(0).replace(/\d(?=(\d{3})+$)/g, '$&.')
+  const parseRupiah = (value: string): number =>
+    parseInt(value.replace(/[^0-9]/g, '') || '0', 10)
+
+  const formatRupiah = (value: string): string => {
+    const number = value.replace(/[^0-9]/g, '')
+    return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
   }
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value
+    const numericValue = rawValue.replace(/[^0-9]/g, '')
+    setIncome(formatRupiah(numericValue))
+  }
 
   const calculate = () => {
-    if (!income || income <= 0) return alert('Masukkan jumlah pendapatan yang valid')
     setShowResults(true)
   }
 
@@ -21,9 +29,10 @@ export default function FinancialCalculator() {
     setShowResults(false)
   }
 
-  const needs = typeof income === 'number' ? income * 0.5 : 0
-  const wants = typeof income === 'number' ? income * 0.3 : 0
-  const savings = typeof income === 'number' ? income * 0.2 : 0
+  const numericIncome = parseRupiah(income)
+  const needs = numericIncome * 0.5
+  const wants = numericIncome * 0.3
+  const savings = numericIncome * 0.2
 
   return (
     <div className="bg-gray-100 min-h-screen p-8">
@@ -40,15 +49,21 @@ export default function FinancialCalculator() {
             Pendapatan Bulanan (Rp)
           </label>
           <div className="flex mb-6">
-            <input
-              type="number"
-              id="income"
-              value={income}
-              onChange={(e) => setIncome(parseFloat(e.target.value))}
-              className="flex-1 p-3 border border-gray-300 rounded-l-lg text-black"
-              placeholder="Masukkan pendapatan"
-            />
-            <button onClick={calculate} className="bg-blue-600 text-white px-4 py-3 rounded-r-lg">
+            <div className="flex items-center w-full">
+              <p className="bg-gray-600 text-white py-3 px-3 rounded-l-lg">Rp</p>
+              <input
+                type="text"
+                id="income"
+                value={income}
+                onChange={handleChange}
+                className="flex-1 p-3 border border-gray-300 text-black"
+                placeholder="Masukkan pendapatan"
+              />
+            </div>
+            <button
+              onClick={calculate}
+              className="bg-blue-600 text-white px-4 py-3 rounded-r-lg ml-2"
+            >
               Hitung
             </button>
           </div>
@@ -56,7 +71,6 @@ export default function FinancialCalculator() {
           {showResults ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                {/* Needs */}
                 <Card
                   title="Kebutuhan Pokok (50%)"
                   subtitle="Perumahan, makanan, utilitas, transportasi"
@@ -64,7 +78,6 @@ export default function FinancialCalculator() {
                   value={needs}
                   percent={50}
                 />
-                {/* Wants */}
                 <Card
                   title="Keinginan (30%)"
                   subtitle="Makan di luar, hiburan, hobi, liburan"
@@ -72,7 +85,6 @@ export default function FinancialCalculator() {
                   value={wants}
                   percent={30}
                 />
-                {/* Savings */}
                 <Card
                   title="Tabungan (20%)"
                   subtitle="Dana darurat, investasi, pelunasan utang"
@@ -82,28 +94,24 @@ export default function FinancialCalculator() {
                 />
               </div>
 
-              {/* Breakdown */}
               <div className="border border-gray-200 rounded-lg p-4 bg-white">
                 <h3 className="text-lg font-semibold mb-3 text-black">Rincian Detail</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  {/* Needs Breakdown */}
                   <div>
                     <h4 className="text-blue-700 font-medium mb-1">Kebutuhan Pokok</h4>
-                    <p className='text-black'>Perumahan: {formatRupiah(needs * 0.35)}</p>
-                    <p className='text-black'>Makanan: {formatRupiah(needs * 0.25)}</p>
-                    <p className='text-black'>Transportasi: {formatRupiah(needs * 0.15)}</p>
+                    <p className='text-black'>Perumahan: Rp{formatRupiah((needs * 0.35).toFixed(0))}</p>
+                    <p className='text-black'>Makanan: Rp{formatRupiah((needs * 0.25).toFixed(0))}</p>
+                    <p className='text-black'>Transportasi: Rp{formatRupiah((needs * 0.15).toFixed(0))}</p>
                   </div>
-                  {/* Wants Breakdown */}
                   <div>
                     <h4 className="text-purple-700 font-medium mb-1">Keinginan</h4>
-                    <p className='text-black'>Makan di luar: {formatRupiah(wants * 0.35)}</p>
-                    <p className='text-black'>Hiburan: {formatRupiah(wants * 0.3)}</p>
+                    <p className='text-black'>Makan di luar: Rp{formatRupiah((wants * 0.35).toFixed(0))}</p>
+                    <p className='text-black'>Hiburan: Rp{formatRupiah((wants * 0.3).toFixed(0))}</p>
                   </div>
-                  {/* Savings Breakdown */}
                   <div>
                     <h4 className="text-green-700 font-medium mb-1">Tabungan</h4>
-                    <p className='text-black'>Dana Darurat: {formatRupiah(savings * 0.4)}</p>
-                    <p className='text-black'>Investasi: {formatRupiah(savings * 0.4)}</p>
+                    <p className='text-black'>Dana Darurat: Rp{formatRupiah((savings * 0.4).toFixed(0))}</p>
+                    <p className='text-black'>Investasi: Rp{formatRupiah((savings * 0.4).toFixed(0))}</p>
                   </div>
                 </div>
               </div>
